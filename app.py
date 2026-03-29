@@ -14,6 +14,35 @@ st.set_page_config(
     layout="wide"
 )
 
+# Auto-initialize DB on startup (needed for Streamlit Cloud deployment)
+def init_db():
+    conn = sqlite3.connect("Youtube.db")
+    cursor = conn.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS Youtube (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            channel TEXT,
+            video_id TEXT,
+            title TEXT,
+            views INTEGER,
+            likes INTEGER,
+            comments INTEGER,
+            duration TEXT
+        )
+    """)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            email TEXT UNIQUE,
+            password TEXT
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+init_db()
+
 def load_css():
     with open("style.css") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
