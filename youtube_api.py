@@ -9,16 +9,23 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Load API key: Streamlit Cloud secrets first, then .env fallback
-try:
-    API_KEY = st.secrets["YOUTUBE_API_KEY"]
-except Exception:
-    API_KEY = os.getenv("YOUTUBE_API_KEY", "YOUR_API_KEY")
+_youtube_client = None
 
-try:
-    youtube = build('youtube', 'v3', developerKey=API_KEY)
-except Exception:
-    youtube = None
+def get_youtube_client():
+    global _youtube_client
+    if _youtube_client is not None:
+        return _youtube_client
+    try:
+        api_key = st.secrets["YOUTUBE_API_KEY"]
+    except Exception:
+        api_key = os.getenv("YOUTUBE_API_KEY", "")
+    if not api_key:
+        return None
+    try:
+        _youtube_client = build('youtube', 'v3', developerKey=api_key)
+        return _youtube_client
+    except Exception:
+        return None
 
 
 # Category mapping from YouTube topic categories URLs
@@ -43,19 +50,22 @@ AUDIENCE_BENCHMARKS = {
 
 def get_channel_id(channel_name):
     try:
-        search = youtube.search().list(part="id", q=channel_name, type="channel", maxResults=1).execute()
+        yt = get_youtube_client()
+        if not yt: return None
+        search = yt.search().list(part="id", q=channel_name, type="channel", maxResults=1).execute()
         if not search.get("items"): return None
         return search["items"][0]["id"]["channelId"]
     except Exception: return None
 
 def get_channel_data(channel_name):
-    if not youtube:
+    yt = get_youtube_client()
+    if not yt:
         return None
     try:
         channel_id = get_channel_id(channel_name)
         if not channel_id: return None
         
-        channel_resp = youtube.channels().list(part="snippet,statistics,topicDetails", id=channel_id).execute()["items"][0]
+        channel_resp = yt.channels().list(part="snippet,statistics,topicDetails", id=channel_id).execute()["items"][0]
         snippet = channel_resp["snippet"]
         stats = channel_resp["statistics"]
         topics = channel_resp.get("topicDetails", {}).get("topicCategories", [])
@@ -98,24 +108,25 @@ def parse_duration(duration):
     return str(timedelta(hours=h, minutes=m, seconds=s))
 
 def get_videos(channel_name):
-    if not youtube:
+    yt = get_youtube_client()
+    if not yt:
         return None
     try:
-        search = youtube.search().list(part="id", q=channel_name, type="channel", maxResults=1).execute()
+        search = yt.search().list(part="id", q=channel_name, type="channel", maxResults=1).execute()
         if not search.get("items"):
             return None
             
         channel_id = search["items"][0]["id"]["channelId"]
-        channel = youtube.channels().list(part="snippet,contentDetails", id=channel_id).execute()["items"][0]
+        channel = yt.channels().list(part="snippet,contentDetails", id=channel_id).execute()["items"][0]
         playlist_id = channel["contentDetails"]["relatedPlaylists"]["uploads"]
         
         videos = []
-        playlist_items = youtube.playlistItems().list(part="snippet", playlistId=playlist_id, maxResults=5).execute()
+        playlist_items = yt.playlistItems().list(part="snippet", playlistId=playlist_id, maxResults=5).execute()
         
         for item in playlist_items["items"]:
             vid = item["snippet"]["resourceId"]["videoId"]
             try:
-                v = youtube.videos().list(part="snippet,statistics,contentDetails", id=vid).execute()["items"][0]
+                v = yt.videos().list(part="snippet,statistics,contentDetails", id=vid).execute()["items"][0]
                 videos.append({
                     "channel": channel["snippet"]["title"],
                     "video_id": vid,
