@@ -84,17 +84,22 @@
 
 /* Demographics Section */
 .demographic-card {
-    background: white;
+    background: #000000;
     padding: 20px;
     border-radius: 12px;
     margin-bottom: 15px;
     border-left: 5px solid #ff4b4b;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    color: white;
 }
 
 .demographic-card h4 {
     margin-top: 0;
-    color: #333;
+    color: white;
+}
+
+.demographic-card p {
+    color: #cccccc;
 }
 
 .female-card {
@@ -111,11 +116,11 @@
 
 /* Info Note */
 .info-note {
-    background: #f1f5f9;
+    background: #111111;
     padding: 15px;
     border-radius: 8px;
     font-size: 0.85rem;
-    color: #475569;
+    color: #aab4c4;
     border-left: 4px solid #94a3b8;
     margin-top: 30px;
 }
