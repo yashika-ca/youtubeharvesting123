@@ -1,6 +1,9 @@
-streamlit
+﻿streamlit
+streamlit-option-menu
+plotly
 pandas
+numpy
 google-api-python-client
 python-dotenv
-streamlit-option-menu
-streamlit-agraph
+extra-streamlit-components
+requests
