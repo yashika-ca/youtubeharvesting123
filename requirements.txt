@@ -1,0 +1,6 @@
+streamlit
+pandas
+google-api-python-client
+python-dotenv
+streamlit-option-menu
+streamlit-agraph

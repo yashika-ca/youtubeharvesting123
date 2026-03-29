@@ -1,0 +1,121 @@
+/* Sidebar gradient */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #121212, #000000);
+}
+
+/* Sidebar text */
+[data-testid="stSidebar"] * {
+    color: white;
+}
+
+/* Dashboard cards */
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    color: black;
+}
+
+.card h1,
+.card h3 {
+    color: black;
+}
+
+/* Buttons */
+.stButton>button {
+    background: #ff4b4b;
+    color: white;
+    border-radius: 10px;
+    height: 45px;
+    width: 200px;
+    font-weight: bold;
+}
+
+/* Input fields */
+.stTextInput>div>div>input {
+    border-radius: 10px;
+}
+
+/* Page background */
+.main {
+    background-color: #f8faff;
+}
+
+/* Category Tag */
+.category-tag {
+    background: #ff4b4b;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+/* Analytics Cards */
+.stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    border-top: 4px solid #ff4b4b;
+}
+
+.stat-card h3 {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.stat-card h1 {
+    font-size: 1.8rem;
+    color: #222;
+    margin: 0;
+}
+
+.stat-card p {
+    font-size: 0.8rem;
+    color: #888;
+    margin: 0;
+}
+
+/* Demographics Section */
+.demographic-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    border-left: 5px solid #ff4b4b;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.demographic-card h4 {
+    margin-top: 0;
+    color: #333;
+}
+
+.female-card {
+    border-left-color: #f472b6;
+}
+
+.male-card {
+    border-left-color: #60a5fa;
+}
+
+.youth-card {
+    border-left-color: #fbbf24;
+}
+
+/* Info Note */
+.info-note {
+    background: #f1f5f9;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: #475569;
+    border-left: 4px solid #94a3b8;
+    margin-top: 30px;
+}
