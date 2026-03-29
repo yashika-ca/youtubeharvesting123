@@ -1,4 +1,5 @@
 import os
+import streamlit as st
 from googleapiclient.discovery import build
 import pandas as pd
 import re
@@ -8,13 +9,17 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Replace it with your real API key or `.env` variable
-API_KEY = os.getenv("YOUTUBE_API_KEY", "YOUR_API_KEY")
+# Load API key: Streamlit Cloud secrets first, then .env fallback
+try:
+    API_KEY = st.secrets["YOUTUBE_API_KEY"]
+except Exception:
+    API_KEY = os.getenv("YOUTUBE_API_KEY", "YOUR_API_KEY")
 
 try:
     youtube = build('youtube', 'v3', developerKey=API_KEY)
 except Exception:
     youtube = None
+
 
 # Category mapping from YouTube topic categories URLs
 TOPIC_MAP = {
